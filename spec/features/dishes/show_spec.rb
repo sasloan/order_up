@@ -30,5 +30,13 @@ RSpec.describe 'As a Visitor' do
 			expect(page).to have_content(@sour_cream.name)
 			expect(page).to have_content(@sour_cream.calories)
 		end
+
+		it 'I see the total calorie count for that dish' do
+
+			expect(page).to have_content("Total Calorie Count: 130")
+			expect(page).not_to have_content("Total Calorie Count: 20")
+			expect(page).not_to have_content("Total Calorie Count: 50")
+			expect(page).not_to have_content("Total Calorie Count: 60")
+		end
 	end
 end
