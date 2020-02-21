@@ -5,9 +5,13 @@ RSpec.describe 'As a Visitor' do
 		before :each do
 			@meg = Chef.create!(name: "Master Chef Meg")
 			@taco = @meg.dishes.create!(name: "Taco", description: "Crunchy taste latin treat")
-			@shell = Ingredients.create!(name: "Taco Shell", calories: 20)
-			@beef = Ingredients.create!(name: "Beef", calories: 60)
-			@sour_cream = Ingredients.create!(name: "Sour Cream", calories: 50)
+			@shell = Ingredient.create!(name: "Taco Shell", calories: 20)
+			@beef = Ingredient.create!(name: "Beef", calories: 60)
+			@sour_cream = Ingredient.create!(name: "Sour Cream", calories: 50)
+
+			@taco.ingredients << @shell
+			@taco.ingredients << @beef
+			@taco.ingredients << @sour_cream
 
 			visit "/dishes/#{@taco.id}"
 
@@ -19,14 +23,12 @@ RSpec.describe 'As a Visitor' do
 			expect(page).to have_content(@taco.name)
 			expect(page).to have_content(@meg.name)
 
-			within "#ingredients" do
-				expect(page).to have_content(@shell.name)
-				expect(page).to have_content(@shell.calories)
-				expect(page).to have_content(@beef.name)
-				expect(page).to have_content(@beef.calories)
-				expect(page).to have_content(@sour_cream.name)
-				expect(page).to have_content(@sour_cream.calories)
-			end
+			expect(page).to have_content(@shell.name)
+			expect(page).to have_content(@shell.calories)
+			expect(page).to have_content(@beef.name)
+			expect(page).to have_content(@beef.calories)
+			expect(page).to have_content(@sour_cream.name)
+			expect(page).to have_content(@sour_cream.calories)
 		end
 	end
 end
